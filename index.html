@@ -3,25 +3,57 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Compound Growth Calculator (Patched Phone Validation)</title>
+  <title>Compound Growth Calculator</title>
   <style>
-    :root{--bg:#0f172a;--text:#e5e7eb;--muted:#9ca3af;--accent:#22d3ee;--accent2:#a78bfa;--danger:#f87171;--ok:#34d399;--border:rgba(255,255,255,.08)}
-    body{margin:0;font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;background:#0f172a;color:var(--text)}
-    .wrap{max-width:1000px;margin:40px auto;padding:24px}
-    .card{background:linear-gradient(180deg,rgba(255,255,255,.03),rgba(255,255,255,.01));border:1px solid var(--border);border-radius:18px;padding:18px}
-    .grid{display:grid;grid-template-columns:1.2fr 1fr;gap:16px}
-    @media(max-width:900px){.grid{grid-template-columns:1fr}}
-    label{font-size:13px;color:var(--muted);display:block;margin-bottom:6px}
-    input,select,button{width:100%;padding:12px 14px;border-radius:12px;border:1px solid var(--border);background:#0a101f;color:var(--text);font-size:15px}
-    .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-    .btn{background:linear-gradient(90deg,var(--accent),var(--accent2));border:none;color:#001018;font-weight:700;cursor:pointer}
-    .kpi{display:flex;justify-content:space-between;border:1px dashed var(--border);border-radius:14px;padding:12px 14px;background:#0b1220;margin-top:8px}
-    .hidden{display:none}
-    table{width:100%;border-collapse:collapse;margin-top:8px}
-    th,td{padding:10px;border-bottom:1px solid var(--border);text-align:left;font-size:14px}
-    .bar{height:10px;border-radius:8px;background:linear-gradient(90deg,var(--accent),var(--accent2))}
-    .err{color:var(--danger);font-size:12px;margin-top:6px}
-    .muted{color:var(--muted);font-size:12px}
+    :root {
+      --bg: #0f172a;
+      --text: #e5e7eb;
+      --muted: #9ca3af;
+      --accent: #22d3ee;
+      --accent2: #a78bfa;
+      --danger: #f87171;
+      --border: rgba(255,255,255,.08);
+    }
+    body {
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      background: var(--bg);
+      color: var(--text);
+    }
+    .wrap { max-width: 1000px; margin: 40px auto; padding: 24px; }
+    .card {
+      background: linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01));
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 18px;
+    }
+    .grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 16px; }
+    @media (max-width: 900px) { .grid { grid-template-columns: 1fr; } }
+    label { font-size: 13px; color: var(--muted); display: block; margin-bottom: 6px; }
+    input, select, button {
+      width: 100%; padding: 12px 14px; border-radius: 12px;
+      border: 1px solid var(--border); background: #0a101f;
+      color: var(--text); font-size: 15px;
+    }
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .btn {
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      border: none; color: #001018; font-weight: 700; cursor: pointer;
+    }
+    .kpi {
+      display: flex; justify-content: space-between;
+      border: 1px dashed var(--border); border-radius: 14px;
+      padding: 12px 14px; background: #0b1220; margin-top: 8px;
+    }
+    .hidden { display: none; }
+    table { width: 100%; border-collapse: collapse; margin-top: 8px; }
+    th, td {
+      padding: 10px; border-bottom: 1px solid var(--border);
+      text-align: left; font-size: 14px;
+    }
+    .bar { height: 10px; border-radius: 8px; background: linear-gradient(90deg, var(--accent), var(--accent2)); }
+    .err { color: var(--danger); font-size: 12px; margin-top: 6px; }
+    .muted { color: var(--muted); font-size: 12px; }
   </style>
 </head>
 <body>
@@ -30,14 +62,29 @@
       <div class="card">
         <h2>Money Growth Visualizer</h2>
         <p class="muted">Results are hypothetical and for education only.</p>
+
         <div class="row">
-          <div><label>Current Age</label><input id="age" type="number" min="13" max="80" value="25"></div>
-          <div><label>Target Age</label><input id="target" type="number" min="20" max="80" value="60"></div>
+          <div>
+            <label>Current Age</label>
+            <input id="age" type="number" min="13" max="80" value="25">
+          </div>
+          <div>
+            <label>Target Age</label>
+            <input id="target" type="number" min="20" max="80" value="60">
+          </div>
         </div>
+
         <div class="row">
-          <div><label>Initial Amount ($)</label><input id="initial" type="number" min="0" step="100" value="0"></div>
-          <div><label>Monthly Contribution ($)</label><input id="monthly" type="number" min="0" step="10" value="200"></div>
+          <div>
+            <label>Initial Amount ($)</label>
+            <input id="initial" type="number" min="0" step="100" value="0">
+          </div>
+          <div>
+            <label>Monthly Contribution ($)</label>
+            <input id="monthly" type="number" min="0" step="10" value="200">
+          </div>
         </div>
+
         <div class="row">
           <div>
             <label>Assumed Annual Return</label>
@@ -52,6 +99,7 @@
             <input id="gateName" placeholder="Your name">
           </div>
         </div>
+
         <div class="row">
           <div>
             <label>Phone (required) <span class="muted">(US 10 digits or +1…)</span></label>
@@ -59,23 +107,42 @@
           </div>
           <div></div>
         </div>
+
         <div id="gateErr" class="err"></div>
-        <div style="margin-top:12px"><button id="calcBtn" class="btn">Calculate</button></div>
-        <p class="muted">By entering your information, you consent to be contacted about planning services. No spam. Opt out anytime.</p>
+        <div style="margin-top:12px">
+          <button id="calcBtn" class="btn">Calculate</button>
+        </div>
+
+        <p class="muted">
+          By entering your information, you consent to be contacted about planning services. No spam. Opt out anytime.
+        </p>
       </div>
 
       <div class="card">
         <div class="kpi">
-          <div><div class="muted">Illustrated balance at target age (nominal)</div><strong id="kpiMain">$0</strong></div>
+          <div>
+            <div class="muted">Illustrated balance at target age (nominal)</div>
+            <strong id="kpiMain">$0</strong>
+          </div>
           <div><span id="tagRate" class="muted">—</span></div>
         </div>
+
         <div id="results" class="hidden">
           <table>
-            <thead><tr><th>Assumption</th><th>Projected Balance</th><th style="width:30%">Visual</th></tr></thead>
+            <thead>
+              <tr>
+                <th>Assumption</th>
+                <th>Projected Balance</th>
+                <th style="width:30%">Visual</th>
+              </tr>
+            </thead>
             <tbody id="tableBody"></tbody>
           </table>
         </div>
-        <div id="placeholder" class="muted">Results will appear here after you calculate.</div>
+
+        <div id="placeholder" class="muted">
+          Results will appear here after you calculate.
+        </div>
       </div>
     </div>
   </div>
@@ -85,21 +152,13 @@ function fvSeries(m, ar, y){const r=ar/12,n=y*12;return r===0?m*n:m*((Math.pow(1
 function fvLump(p, ar, y){return p*Math.pow(1+ar,y);}
 function fmtUSD(x){return x.toLocaleString(undefined,{style:'currency',currency:'USD',maximumFractionDigits:0});}
 
-// NANP validation: accepts 10-digit, or 11-digit with leading '1'; area/central office cannot start 0/1; rejects 000; removes overzealous 555 bans
+// ✅ Fixed phone validation: accepts any 10-digit or +1 format, rejects obvious fakes only
 function isValidUSPhone(num){
-  const digits = num.replace(/\\D/g,'');
-  if(digits.length===11 && digits.startsWith('1')){
-    return isValidUSPhone(digits.slice(1));
-  }
-  if(digits.length!==10) return false;
-  const area = digits.slice(0,3);
-  const exch = digits.slice(3,6);
-  const line = digits.slice(6);
-  if(!/^[2-9]\\d{2}$/.test(area)) return false;
-  if(!/^[2-9]\\d{2}$/.test(exch)) return false;
-  if(!/^\\d{4}$/.test(line)) return false;
-  const allSame = /^([0-9])\\1{9}$/.test(digits);
-  const sequential = (digits==='1234567890'||digits==='0987654321');
+  const digits = num.replace(/\D/g,''); // keep only numbers
+  if (digits.length === 11 && digits.startsWith('1')) return isValidUSPhone(digits.slice(1));
+  if (digits.length !== 10) return false; // require 10 digits
+  const allSame = /^([0-9])\1{9}$/.test(digits); // 1111111111 etc.
+  const sequential = (digits === '1234567890' || digits === '0987654321');
   return !(allSame || sequential);
 }
 
@@ -135,16 +194,20 @@ function calc(){
     const tdA=document.createElement('td'); tdA.textContent=(x.rate*100).toFixed(0)+'%';
     const tdB=document.createElement('td'); tdB.textContent=fmtUSD(x.fv);
     const tdC=document.createElement('td');
-    const wrap=document.createElement('div'); wrap.style.width='100%'; wrap.style.background='rgba(255,255,255,.06)'; wrap.style.borderRadius='8px';
-    const bar=document.createElement('div'); bar.className='bar'; bar.style.width=(maxVal? (x.fv/maxVal*100):0).toFixed(2)+'%';
+    const wrap=document.createElement('div');
+    wrap.style.width='100%'; wrap.style.background='rgba(255,255,255,.06)';
+    wrap.style.borderRadius='8px';
+    const bar=document.createElement('div');
+    bar.className='bar';
+    bar.style.width=(maxVal? (x.fv/maxVal*100):0).toFixed(2)+'%';
     wrap.appendChild(bar); tdC.appendChild(wrap);
-    tr.appendChild(tdA); tr.appendChild(tdB); tr.appendChild(tdC); tbody.appendChild(tr);
+    tr.appendChild(tdA); tr.appendChild(tdB); tr.appendChild(tdC);
+    tbody.appendChild(tr);
   });
 
   document.getElementById('results').classList.remove('hidden');
   document.getElementById('placeholder').classList.add('hidden');
 }
-
 document.getElementById('calcBtn').addEventListener('click',calc);
 </script>
 </body>
