@@ -5,55 +5,23 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Compound Growth Calculator</title>
   <style>
-    :root {
-      --bg: #0f172a;
-      --text: #e5e7eb;
-      --muted: #9ca3af;
-      --accent: #22d3ee;
-      --accent2: #a78bfa;
-      --danger: #f87171;
-      --border: rgba(255,255,255,.08);
-    }
-    body {
-      margin: 0;
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
-      background: var(--bg);
-      color: var(--text);
-    }
-    .wrap { max-width: 1000px; margin: 40px auto; padding: 24px; }
-    .card {
-      background: linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01));
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      padding: 18px;
-    }
-    .grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 16px; }
-    @media (max-width: 900px) { .grid { grid-template-columns: 1fr; } }
-    label { font-size: 13px; color: var(--muted); display: block; margin-bottom: 6px; }
-    input, select, button {
-      width: 100%; padding: 12px 14px; border-radius: 12px;
-      border: 1px solid var(--border); background: #0a101f;
-      color: var(--text); font-size: 15px;
-    }
-    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-    .btn {
-      background: linear-gradient(90deg, var(--accent), var(--accent2));
-      border: none; color: #001018; font-weight: 700; cursor: pointer;
-    }
-    .kpi {
-      display: flex; justify-content: space-between;
-      border: 1px dashed var(--border); border-radius: 14px;
-      padding: 12px 14px; background: #0b1220; margin-top: 8px;
-    }
-    .hidden { display: none; }
-    table { width: 100%; border-collapse: collapse; margin-top: 8px; }
-    th, td {
-      padding: 10px; border-bottom: 1px solid var(--border);
-      text-align: left; font-size: 14px;
-    }
-    .bar { height: 10px; border-radius: 8px; background: linear-gradient(90deg, var(--accent), var(--accent2)); }
-    .err { color: var(--danger); font-size: 12px; margin-top: 6px; }
-    .muted { color: var(--muted); font-size: 12px; }
+    :root { --bg:#0f172a; --text:#e5e7eb; --muted:#9ca3af; --accent:#22d3ee; --accent2:#a78bfa; --danger:#f87171; --border:rgba(255,255,255,.08); }
+    body { margin:0; font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial; background:var(--bg); color:var(--text); }
+    .wrap { max-width:1000px; margin:40px auto; padding:24px; }
+    .card { background:linear-gradient(180deg,rgba(255,255,255,.03),rgba(255,255,255,.01)); border:1px solid var(--border); border-radius:18px; padding:18px; }
+    .grid { display:grid; grid-template-columns:1.2fr 1fr; gap:16px; }
+    @media (max-width:900px){ .grid{ grid-template-columns:1fr; } }
+    label { font-size:13px; color:var(--muted); display:block; margin-bottom:6px; }
+    input,select,button { width:100%; padding:12px 14px; border-radius:12px; border:1px solid var(--border); background:#0a101f; color:var(--text); font-size:15px; }
+    .row { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+    .btn { background:linear-gradient(90deg,var(--accent),var(--accent2)); border:none; color:#001018; font-weight:700; cursor:pointer; }
+    .kpi { display:flex; justify-content:space-between; border:1px dashed var(--border); border-radius:14px; padding:12px 14px; background:#0b1220; margin-top:8px; }
+    .hidden { display:none; }
+    table { width:100%; border-collapse:collapse; margin-top:8px; }
+    th,td { padding:10px; border-bottom:1px solid var(--border); text-align:left; font-size:14px; }
+    .bar { height:10px; border-radius:8px; background:linear-gradient(90deg,var(--accent),var(--accent2)); }
+    .err { color:var(--danger); font-size:12px; margin-top:6px; }
+    .muted { color:var(--muted); font-size:12px; }
   </style>
 </head>
 <body>
@@ -152,18 +120,13 @@ function fvSeries(m, ar, y){const r=ar/12,n=y*12;return r===0?m*n:m*((Math.pow(1
 function fvLump(p, ar, y){return p*Math.pow(1+ar,y);}
 function fmtUSD(x){return x.toLocaleString(undefined,{style:'currency',currency:'USD',maximumFractionDigits:0});}
 
-// ✅ Fixed phone validation: accepts any 10-digit or +1 format, rejects obvious fakes only
-<script>
+// Fixed permissive phone validation
 function isValidUSPhone(num){
   const digits = (num || '').replace(/\D/g,'');
-  // Ultra-permissive gate: allow 10 digits, or 11 starting with 1, or any 7+ digits
   if (digits.length === 11 && digits.startsWith('1')) return digits.slice(1).length === 10;
   if (digits.length >= 10) return true;
-  if (digits.length >= 7) return true;  // fallback so normal local formats pass
+  if (digits.length >= 7) return true;
   return false;
-}
-</script>
-
 }
 
 function validateGate(){
@@ -171,7 +134,7 @@ function validateGate(){
   const phone=document.getElementById('gatePhone').value.trim();
   const err=document.getElementById('gateErr'); err.textContent='';
   if(!name){err.textContent='Name is required.';return false;}
-  if(!isValidUSPhone(phone)){err.textContent='Please enter a valid U.S. phone number (10 digits or +1…).';return false;}
+  if(!isValidUSPhone(phone)){err.textContent='Please enter a valid phone number.';return false;}
   return {name, phone};
 }
 
