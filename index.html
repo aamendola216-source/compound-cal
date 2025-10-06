@@ -153,13 +153,17 @@ function fvLump(p, ar, y){return p*Math.pow(1+ar,y);}
 function fmtUSD(x){return x.toLocaleString(undefined,{style:'currency',currency:'USD',maximumFractionDigits:0});}
 
 // ✅ Fixed phone validation: accepts any 10-digit or +1 format, rejects obvious fakes only
+<script>
 function isValidUSPhone(num){
-  const digits = num.replace(/\D/g,''); // keep only numbers
-  if (digits.length === 11 && digits.startsWith('1')) return isValidUSPhone(digits.slice(1));
-  if (digits.length !== 10) return false; // require 10 digits
-  const allSame = /^([0-9])\1{9}$/.test(digits); // 1111111111 etc.
-  const sequential = (digits === '1234567890' || digits === '0987654321');
-  return !(allSame || sequential);
+  const digits = (num || '').replace(/\D/g,'');
+  // Ultra-permissive gate: allow 10 digits, or 11 starting with 1, or any 7+ digits
+  if (digits.length === 11 && digits.startsWith('1')) return digits.slice(1).length === 10;
+  if (digits.length >= 10) return true;
+  if (digits.length >= 7) return true;  // fallback so normal local formats pass
+  return false;
+}
+</script>
+
 }
 
 function validateGate(){
