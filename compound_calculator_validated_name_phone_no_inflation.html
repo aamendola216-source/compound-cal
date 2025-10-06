@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Compound Growth Calculator (Validated Name + Phone Gate)</title>
+  <style>
+    :root{
+      --bg:#0f172a; --panel:#111827; --text:#e5e7eb; --muted:#9ca3af;
+      --accent:#22d3ee; --accent2:#a78bfa; --danger:#f87171; --ok:#34d399;
+      --card:#0b1220; --border:rgba(255,255,255,0.08);
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,"Apple Color Emoji","Segoe UI Emoji";
+      background: radial-gradient(1200px 700px at 20% -10%, #1e293b 0%, #0b1020 40%, #0a0f1e 100%), var(--bg); color:var(--text); line-height:1.5;}
+    .wrap{max-width:1000px;margin:40px auto;padding:24px}
+    .header{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:20px;}
+    .brand{font-weight:800;font-size:22px;letter-spacing:0.3px;display:flex;align-items:center;gap:10px;}
+    .brand .dot{width:10px;height:10px;border-radius:999px;background:linear-gradient(45deg,var(--accent),var(--accent2));display:inline-block}
+    .card{background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));border:1px solid var(--border);
+      border-radius:18px;padding:18px;box-shadow:0 10px 30px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.04);}
+    .grid{display:grid;grid-template-columns:1fr;gap:16px}
+    @media(min-width:900px){.grid{grid-template-columns:1.2fr 1fr;}}
+    h1{font-size:28px;margin:4px 0 2px}
+    p.lead{color:var(--muted);margin:0}
+    label{font-size:13px;color:var(--muted);display:block;margin-bottom:6px}
+    input,select{width:100%;background:#0a101f;color:var(--text);border:1px solid var(--border);outline:none;border-radius:12px;padding:12px 14px;font-size:15px}
+    .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:12px 14px;border-radius:12px;border:1px solid var(--border);
+      background:linear-gradient(90deg,var(--accent),var(--accent2));color:#001018;font-weight:700;text-decoration:none;cursor:pointer;transition:transform .06s ease;}
+    .btn:active{transform:translateY(1px)}
+    .muted{color:var(--muted)}
+    .pill{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--border);border-radius:999px;padding:6px 10px;font-size:12px;background:#0a0f1e}
+    .kpi{display:flex;align-items:center;justify-content:space-between;border:1px dashed var(--border);border-radius:14px;padding:12px 14px;background:#0b1220}
+    .kpi strong{font-size:18px}
+    table{width:100%;border-collapse:collapse;border-spacing:0;margin-top:8px}
+    th,td{padding:10px;border-bottom:1px solid var(--border);text-align:left;font-size:14px}
+    th{color:var(--muted);font-weight:600}
+    .bar{height:10px;border-radius:8px;background:linear-gradient(90deg,var(--accent),var(--accent2));}
+    .lock{border:1px solid var(--border);padding:14px;border-radius:12px;background:#0a0f1e;margin-top:10px}
+    small.disclaimer{display:block;margin-top:14px;color:var(--muted);font-size:12px}
+    .foot{margin-top:18px;font-size:12px;color:var(--muted)}
+    .hidden{display:none}
+    .tag{font-size:12px;border:1px solid var(--border);padding:4px 8px;border-radius:999px}
+    .badge{font-size:11px;background:#0a1428;border:1px solid var(--border);padding:4px 8px;border-radius:999px}
+    .notes{font-size:12px;color:var(--muted)}
+    .err{color:var(--danger);font-size:12px;margin-top:6px}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="header">
+      <div class="brand"><span class="dot"></span> Money Growth Visualizer</div>
+      <div class="pill"><span>Educational Tool</span><span class="badge">Hypothetical • Not Advice</span></div>
+    </div>
+
+    <div class="grid">
+      <!-- LEFT: Inputs + Gate -->
+      <div class="card">
+        <h1>See what your money <em>could</em> grow to</h1>
+        <p class="lead">Enter a few numbers. Results are hypothetical illustrations at different return rates.</p>
+
+        <div class="row" style="margin-top:16px">
+          <div>
+            <label>Current Age</label>
+            <input id="age" type="number" min="13" max="80" value="25"/>
+          </div>
+          <div>
+            <label>Target Age</label>
+            <input id="target" type="number" min="20" max="80" value="60"/>
+          </div>
+        </div>
+        <div class="row" style="margin-top:12px">
+          <div>
+            <label>Initial Amount ($)</label>
+            <input id="initial" type="number" min="0" step="100" value="0"/>
+          </div>
+          <div>
+            <label>Monthly Contribution ($)</label>
+            <input id="monthly" type="number" min="0" step="10" value="200"/>
+          </div>
+        </div>
+        <div class="row" style="margin-top:12px">
+          <div>
+            <label>Assumed Annual Return (to display)</label>
+            <select id="assumed">
+              <option value="0.06">6% (conservative)</option>
+              <option value="0.08" selected>8% (moderate)</option>
+              <option value="0.10">10% (aggressive)</option>
+            </select>
+          </div>
+          <div>
+            <label>Your Name <span class="muted">(required)</span></label>
+            <input id="gateName" placeholder="Your name"/>
+          </div>
+        </div>
+        <div class="row" style="margin-top:12px">
+          <div>
+            <label>Phone Number <span class="muted">(required)</span></label>
+            <input id="gatePhone" type="tel" placeholder="e.g., 555-123-4567"/>
+          </div>
+          <div></div>
+        </div>
+
+        <div id="gateErr" class="err"></div>
+
+        <div style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap">
+          <button class="btn" id="calcBtn">Calculate</button>
+          <span class="notes">We’ll show three cases (6%, 8%, 10%) plus your selected assumption.</span>
+        </div>
+
+        <small class="disclaimer">
+          This calculator is for general <strong>educational</strong> purposes only and does not constitute investment advice.
+          Results are <strong>hypothetical</strong> and based on user inputs, assume steady contributions and constant returns (which rarely occur in real markets).
+          Past performance does not guarantee future results. By entering your information, you consent to be contacted about planning services.
+        </small>
+      </div>
+
+      <!-- RIGHT: Results -->
+      <div class="card">
+        <div class="kpi">
+          <div>
+            <div class="muted">Illustrated balance at target age (nominal)</div>
+            <strong id="kpiMain">$0</strong>
+          </div>
+          <div><span class="tag" id="tagRate">—</span></div>
+        </div>
+
+        <div id="results" class="hidden">
+          <table>
+            <thead><tr><th>Assumption</th><th>Projected Balance</th><th style="width:30%">Visual</th></tr></thead>
+            <tbody id="tableBody"></tbody>
+          </table>
+        </div>
+
+        <div id="placeholder" class="muted">
+          Results will appear here after you calculate.
+        </div>
+
+        <div class="foot">
+          © <span id="year"></span> Your Advisor Name • RIA/B-D Disclosures Here • <a href="#" style="color:var(--accent)">Privacy</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script>
+function fvSeries(monthly, annualRate, years){
+  const r = annualRate/12;
+  const n = years*12;
+  if (r === 0) return monthly * n;
+  return monthly * ((Math.pow(1+r, n) - 1) / r);
+}
+function fvLump(initial, annualRate, years){
+  return initial * Math.pow(1+annualRate, years);
+}
+function fmtUSD(x){
+  return x.toLocaleString(undefined,{style:'currency',currency:'USD',maximumFractionDigits:0});
+}
+
+// Strong US phone format + fake-number filters
+function isValidUSPhone(num){
+  const phonePattern = /^(\\+?1\\s?)?(\\([2-9]\\d{2}\\)|[2-9]\\d{2})[-.\\s]?\\d{3}[-.\\s]?\\d{4}$/;
+  if(!phonePattern.test(num)) return false;
+  const digits = num.replace(/\\D/g,'');
+  // Basic fake patterns: all same digit, sequential, obvious fillers, area code 555, exchange 555
+  const allSame = /^([0-9])\\1{9}$/.test(digits);
+  const sequential = (digits === '1234567890' || digits === '0987654321');
+  const hasAllFives = /5555555/.test(digits);
+  const areaCode = digits.slice(-10,-7);   // last 10 digits -> first 3 are area
+  const exchange = digits.slice(-7,-4);    // next 3
+  const fakeArea = areaCode === '555';
+  const fakeExchange = exchange === '555' || (areaCode === '800' && exchange === '000'); // rough extra guard
+  return !(allSame || sequential || hasAllFives || fakeArea || fakeExchange);
+}
+
+function validateGate(){
+  const name = document.getElementById('gateName').value.trim();
+  const phone = document.getElementById('gatePhone').value.trim();
+  const err = document.getElementById('gateErr');
+  err.textContent = '';
+  if (!name){ err.textContent = 'Name is required.'; return false; }
+  if (!isValidUSPhone(phone)){ err.textContent = 'Please enter a real U.S. phone number.'; return false; }
+  return {name, phone};
+}
+
+function calc(){
+  const gate = validateGate();
+  if (!gate) return;
+
+  // Optional: send gate info to your endpoint here
+  // fetch('https://your-endpoint.com', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({name:gate.name, phone:gate.phone, source:'calculator_gate'}) });
+
+  const age = parseFloat(document.getElementById('age').value||'0');
+  const target = parseFloat(document.getElementById('target').value||'0');
+  const years = Math.max(0, target - age);
+  const initial = parseFloat(document.getElementById('initial').value||'0');
+  const monthly = parseFloat(document.getElementById('monthly').value||'0');
+  const assumed = parseFloat(document.getElementById('assumed').value||'0.08');
+
+  const rates = [0.06,0.08,0.10];
+  const table = document.getElementById('tableBody');
+  table.innerHTML = '';
+
+  let maxVal = 0;
+  const rows = rates.map(r => {
+    const fv = fvLump(initial,r,years) + fvSeries(monthly,r,years);
+    if (fv > maxVal) maxVal = fv;
+    return {rate:r, fv};
+  });
+
+  const assumedRow = rows.find(x => Math.abs(x.rate-assumed) < 1e-9) || rows[1];
+  document.getElementById('kpiMain').textContent = fmtUSD(assumedRow.fv);
+  document.getElementById('tagRate').textContent = (assumed*100).toFixed(0) + '% (nominal)';
+
+  rows.forEach(x => {
+    const tr = document.createElement('tr');
+    const tdA = document.createElement('td'); tdA.textContent = (x.rate*100).toFixed(0) + '%';
+    const tdB = document.createElement('td'); tdB.textContent = fmtUSD(x.fv);
+    const tdC = document.createElement('td');
+    const wrap = document.createElement('div'); wrap.style.width='100%'; wrap.style.background='rgba(255,255,255,0.06)'; wrap.style.borderRadius='8px';
+    const bar = document.createElement('div'); bar.className='bar';
+    const pct = maxVal>0 ? (x.fv/maxVal*100) : 0; bar.style.width = pct.toFixed(2)+'%';
+    wrap.appendChild(bar); tdC.appendChild(wrap);
+    tr.appendChild(tdA); tr.appendChild(tdB); tr.appendChild(tdC); table.appendChild(tr);
+  });
+
+  document.getElementById('results').classList.remove('hidden');
+  document.getElementById('placeholder').classList.add('hidden');
+}
+
+document.getElementById('calcBtn').addEventListener('click', calc);
+document.getElementById('year').textContent = new Date().getFullYear();
+</script>
+</body>
+</html>
